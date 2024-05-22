@@ -4,21 +4,17 @@ import orderServices from './order.services';
 
 const createOrder = async (req: Request, res: Response) => {
     try {
-        const { email, price, quantity } = req.body;
-        const order = await orderServices.createOrder({
-            email, price, quantity,
-            productId: ''
-        });
+        const { email, productId, price, quantity } = req.body;
+        const order = await orderServices.createOrder({ email, productId, price, quantity });
         res.status(201).json({
             success: true,
             message: 'Order created successfully!',
             data: order
         });
     } catch (error) {
-        res.status(500).json({
+        res.status(400).json({
             success: false,
-            message: 'Server Error',
-            error: error
+            message: error || 'Server Error'
         });
     }
 };

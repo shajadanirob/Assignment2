@@ -64,7 +64,7 @@ export const createProduct = async (req: Request, res: Response) => {
         let products;
 
         if (searchTerm && typeof searchTerm === 'string') {
-            products = await ProductService.searchProducts(searchTerm);
+            products = await ProductService.getAllProducts(searchTerm);
             res.status(200).json({
                 success: true,
                 message: `Products matching search term '${searchTerm}' fetched successfully!`,

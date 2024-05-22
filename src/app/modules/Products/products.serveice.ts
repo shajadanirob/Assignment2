@@ -9,10 +9,26 @@ const createProduct = async (payLoad : TProduct)=>{
     const result = await Product.create(payLoad);
     return result
 }
-const getAllProducts = async ()=>{
-    const result = await Product.find();
-    return result ;
-}
+const getAllProducts = async (searchTerm?: string) => {
+    try {
+        let query = {};
+        if (searchTerm) {
+            query = {
+                $or: [
+                    { name: { $regex: searchTerm, $options: 'i' } },
+                    { description: { $regex: searchTerm, $options: 'i' } },
+                    { category: { $regex: searchTerm, $options: 'i' } },
+                    { 'tags': { $regex: searchTerm, $options: 'i' } }
+                ]
+            };
+        }
+        const products = await Product.find(query);
+        return products;
+    } catch (error) {
+        throw new Error(`Error fetching products: ${error}`);
+    }
+};
+
 const getSingleProducts = async (id : String)=>{
     const result = await Product.findById(id);
     return result
@@ -49,22 +65,6 @@ const deleteProducts = async (id : String )=>{
 }
 
 
-const searchProducts = async (searchTerm: string) => {
-    try {
-        const regex = new RegExp(searchTerm, 'i'); 
-        const products = await Product.find({
-            $or: [
-                { name: { $regex: regex } },
-                { description: { $regex: regex } },
-                { category: { $regex: regex } },
-                { tags: { $regex: regex } }
-            ]
-        });
-        return products;
-    } catch (error) {
-        throw new Error(`Error searching products: ${error}`);
-    }
-};
 
 
 
@@ -80,5 +80,5 @@ export const ProductService ={
     getSingleProducts,
     updateProducts,
     deleteProducts,
-    searchProducts
+    // searchProducts
 }
