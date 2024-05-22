@@ -1,7 +1,7 @@
 // import { Schema, model } from 'mongoose';
 
-import { Schema, model } from "mongoose";
-import { TInventory, TProduct, TVariant } from "./products.interface";
+import { Schema, model } from 'mongoose';
+import { TInventory, TProduct, TVariant } from './products.interface';
 
 // const variantSchema = new Schema({
 //     type: { type: String, required: true },
@@ -27,54 +27,53 @@ import { TInventory, TProduct, TVariant } from "./products.interface";
 
 // export default Product;
 
-
-
-
 export const variantSchema = new Schema<TVariant>({
-    type: {
-        type: String,
-        required: true
-    },
-    value: {
-        type: String,
-        required: true
-    }
+  type: {
+    type: String,
+    required: true,
+  },
+  value: {
+    type: String,
+    required: true,
+  },
 });
 
 export const inventorySchema = new Schema<TInventory>({
-    quantity: {
-        type: Number,
-        required: true
-    },
-    inStock: {
-        type: Boolean,
-        required: true
-    }
+  quantity: {
+    type: Number,
+    required: true,
+  },
+  inStock: {
+    type: Boolean,
+    required: true,
+  },
 });
 
 export const productSchema = new Schema<TProduct>({
-    name: {
-        type: String,
-        required: [true , 'name is required'],
+  name: {
+    type: String,
+    required: [true, 'name is required'],
+  },
+  description: {
+    type: String,
+    required: [true, 'description is required'],
+  },
+  price: {
+    type: Number,
+    required: [true, 'price is required'],
+  },
+  category: {
+    type: String,
+    required: true,
+  },
+  tags: [
+    {
+      type: String,
+      required: true,
     },
-    description: {
-        type: String,
-        required: [true, 'description is required']
-    },
-    price: {
-        type: Number,
-        required: [true, 'price is required']
-    },
-    category: {
-        type: String,
-        required: true
-    },
-    tags: [{
-        type: String,
-        required: true
-    }],
-    variants: [variantSchema],
-    inventory: inventorySchema
+  ],
+  variants: [variantSchema],
+  inventory: inventorySchema,
 });
 
-export const Product =model<TProduct>('Product', productSchema);
+export const Product = model<TProduct>('Product', productSchema);
