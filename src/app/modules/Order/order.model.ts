@@ -12,11 +12,11 @@ const orderSchema = new Schema<IOrder>({
         type: String,
         required: true
     },
-    // productId: {
-    //     type: Schema.Types.ObjectId,
-    //     ref: 'Product',
-    //     required: true
-    // },
+    productId: {
+        type: Schema.Types.ObjectId,
+        ref: 'Product',
+        required: true
+    },
     price: {
         type: Number,
         required: true
