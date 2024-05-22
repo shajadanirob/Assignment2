@@ -11,26 +11,23 @@ const createOrder = async (orderData: { email: string; productId: string; price:
     }
 };
 
-const getAllOrders = async () => {
+const getAllOrders = async (email?: string) => {
     try {
-        const orders = await Order.find();
+        let query = {};
+        if (email) {
+            query = { email };
+        }
+        const orders = await Order.find(query);
         return orders;
     } catch (error) {
         throw new Error(`Error fetching orders: ${error}`);
     }
 };
 
-const getOrdersByEmail = async (email: string) => {
-    try {
-        const orders = await Order.find({ email });
-        return orders;
-    } catch (error) {
-        throw new Error(`Error fetching orders for email ${email}: ${error}`);
-    }
-};
+
 
 export default {
     createOrder,
     getAllOrders,
-    getOrdersByEmail
+    
 };
