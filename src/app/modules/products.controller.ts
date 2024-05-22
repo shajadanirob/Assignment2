@@ -4,17 +4,17 @@ import { Request, Response } from 'express';
 import { ProductService } from './Products/products.serveice';
 import { createProductSchema } from './Products/products.validation';
 import { Product } from './Products/products.model';
-
+// Controller function to create a new product
 export const createProduct = async (req: Request, res: Response) => {
   try {
-    const { error } = createProductSchema.validate(req.body);
+    const { error } = createProductSchema.validate(req.body); // Validate the request body
     if (error)
       return res
         .status(400)
         .json({ success: false, message: error.details[0].message });
 
-    const product = new Product(req.body);
-    await product.save();
+    const product = new Product(req.body); // Create a new product instance
+    await product.save(); // Save the product to the database
     res
       .status(201)
       .json({
@@ -27,12 +27,14 @@ export const createProduct = async (req: Request, res: Response) => {
   }
 };
 
+// Controller function to get all products
 const getAllProduct = async (req: Request, res: Response) => {
   try {
-    const { searchTerm } = req.query;
+    const { searchTerm } = req.query; // Get the search term from the query
     let products;
 
     if (searchTerm && typeof searchTerm === 'string') {
+      // If searchTerm exists, call ProductService with the searchTerm
       products = await ProductService.getAllProducts(searchTerm);
       res.status(200).json({
         success: true,
@@ -40,6 +42,7 @@ const getAllProduct = async (req: Request, res: Response) => {
         data: products,
       });
     } else {
+      // If searchTerm does not exist, call ProductService without the searchTerm
       products = await ProductService.getAllProducts();
       res.status(200).json({
         success: true,
@@ -56,6 +59,7 @@ const getAllProduct = async (req: Request, res: Response) => {
   }
 };
 
+// Controller function to get a single product by ID
 const getSingleProduct = async (req: Request, res: Response) => {
   try {
     const { productId } = req.params;
@@ -72,6 +76,8 @@ const getSingleProduct = async (req: Request, res: Response) => {
     });
   }
 };
+
+// Controller function to update a product by ID
 const updateProducts = async (req: Request, res: Response) => {
   try {
     const { productId } = req.params;
@@ -90,6 +96,8 @@ const updateProducts = async (req: Request, res: Response) => {
     });
   }
 };
+
+// Controller function to delete a product by ID
 const deleteProduct = async (req: Request, res: Response) => {
   try {
     const { productId } = req.params;
