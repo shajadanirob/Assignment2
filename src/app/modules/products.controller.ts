@@ -15,13 +15,11 @@ export const createProduct = async (req: Request, res: Response) => {
 
     const product = new Product(req.body); // Create a new product instance
     await product.save(); // Save the product to the database
-    res
-      .status(201)
-      .json({
-        success: true,
-        message: 'Product created successfully!',
-        data: product,
-      });
+    res.status(201).json({
+      success: true,
+      message: 'Product created successfully!',
+      data: product,
+    });
   } catch (err) {
     res.status(500).json({ success: false, message: 'Server Error' });
   }
